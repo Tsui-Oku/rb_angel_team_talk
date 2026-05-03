@@ -45,7 +45,7 @@ body{
 #save-btn,#menu-btn{background:none;border:none;cursor:pointer;color:rgba(180,140,80,0.6);font-size:15px;padding:0;line-height:1;transition:color 0.2s;}
 #save-btn:hover,#menu-btn:hover{color:rgba(180,140,80,1);}
 
-/* メンバーアイコン小 */
+/* メンバー行 */
 .members-row{
   display:flex;gap:6px;padding:6px 14px 8px;
   background:rgba(14,11,8,0.8);
@@ -73,8 +73,7 @@ body{
   background:rgba(180,140,80,0.07);
   border:1px solid rgba(180,140,80,0.12);
   border-radius:8px;padding:2px 10px;
-  margin:2px auto;width:fit-content;
-  letter-spacing:0.1em;
+  margin:2px auto;width:fit-content;letter-spacing:0.1em;
 }
 
 .msg-row{display:flex;align-items:flex-end;gap:5px;}
@@ -91,43 +90,22 @@ body{
 .sender.badeni{color:rgba(180,120,60,0.8);}
 .sender.rafal{color:rgba(100,150,200,0.8);}
 
-.bubble{
-  padding:8px 12px;font-size:12.5px;line-height:1.9;
-  white-space:pre-wrap;word-break:break-word;letter-spacing:0.02em;
-}
-.bubble.badeni{
-  background:rgba(30,20,10,0.95);color:#d0bfa0;
-  border-radius:14px;border-top-left-radius:3px;
-  border:1px solid rgba(120,80,40,0.3);
-}
-.bubble.rafal{
-  background:rgba(10,20,35,0.95);color:#b8cce0;
-  border-radius:14px;border-top-left-radius:3px;
-  border:1px solid rgba(60,100,150,0.3);
-}
-.bubble.user{
-  background:rgba(160,130,70,0.8);color:#0e0b08;
-  border-radius:14px;border-top-right-radius:3px;
-  font-family:-apple-system,'Hiragino Kaku Gothic ProN',sans-serif;
-  font-size:13px;
-}
-.bubble.system-warn{
-  background:rgba(60,20,10,0.7);color:#d0a080;
-  border-radius:10px;border:1px solid rgba(140,60,30,0.3);
-  font-size:11px;text-align:center;padding:7px 12px;
-}
+.bubble{padding:8px 12px;font-size:12.5px;line-height:1.9;white-space:pre-wrap;word-break:break-word;letter-spacing:0.02em;}
+.bubble.badeni{background:rgba(30,20,10,0.95);color:#d0bfa0;border-radius:14px;border-top-left-radius:3px;border:1px solid rgba(120,80,40,0.3);}
+.bubble.rafal{background:rgba(10,20,35,0.95);color:#b8cce0;border-radius:14px;border-top-left-radius:3px;border:1px solid rgba(60,100,150,0.3);}
+.bubble.user{background:rgba(160,130,70,0.8);color:#0e0b08;border-radius:14px;border-top-right-radius:3px;font-family:-apple-system,'Hiragino Kaku Gothic ProN',sans-serif;font-size:13px;}
+.bubble.system-warn{background:rgba(60,20,10,0.7);color:#d0a080;border-radius:10px;border:1px solid rgba(140,60,30,0.3);font-size:11px;text-align:center;padding:7px 12px;}
+
+/* 画像バブル */
+.bubble-img{max-width:200px;border-radius:10px;overflow:hidden;cursor:pointer;}
+.bubble-img img{width:100%;display:block;}
 .ts{font-size:9px;color:rgba(180,140,80,0.3);margin-top:2px;padding:0 2px;}
 
 /* タイピング */
 .typing-row{display:flex;align-items:flex-end;gap:5px;}
 .typing-av{width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0;align-self:flex-start;margin-top:2px;}
 .typing-av img{width:100%;height:100%;object-fit:cover;}
-.typing-bubble{
-  background:rgba(30,20,10,0.95);
-  border:1px solid rgba(120,80,40,0.25);
-  border-radius:14px;border-top-left-radius:3px;
-  padding:10px 13px;display:flex;gap:4px;align-items:center;
-}
+.typing-bubble{background:rgba(30,20,10,0.95);border:1px solid rgba(120,80,40,0.25);border-radius:14px;border-top-left-radius:3px;padding:10px 13px;display:flex;gap:4px;align-items:center;}
 .dot{width:5px;height:5px;border-radius:50%;background:rgba(180,140,80,0.4);animation:bounce 1.4s infinite;}
 .dot:nth-child(2){animation-delay:.25s;}
 .dot:nth-child(3){animation-delay:.5s;}
@@ -138,59 +116,39 @@ body{
   background:rgba(14,11,8,0.97);
   border-top:1px solid rgba(180,140,80,0.15);
   padding:8px 10px;
-  display:flex;align-items:center;gap:7px;
+  display:flex;align-items:center;gap:6px;
   flex-shrink:0;position:relative;z-index:1;
 }
-#inp{
-  flex:1;border:1px solid rgba(180,140,80,0.25);
-  border-radius:18px;padding:8px 13px;
-  font-size:13px;background:rgba(255,255,255,0.04);
-  outline:none;font-family:inherit;color:#e0d0b0;
-  line-height:1.4;
-}
+#img-btn{background:none;border:none;cursor:pointer;color:rgba(180,140,80,0.5);font-size:18px;padding:0;line-height:1;flex-shrink:0;transition:color 0.2s;}
+#img-btn:hover{color:rgba(180,140,80,1);}
+#file-input{display:none;}
+#inp{flex:1;border:1px solid rgba(180,140,80,0.25);border-radius:18px;padding:8px 13px;font-size:13px;background:rgba(255,255,255,0.04);outline:none;font-family:inherit;color:#e0d0b0;line-height:1.4;}
 #inp:focus{border-color:rgba(180,140,80,0.55);}
 #inp::placeholder{color:rgba(180,140,80,0.2);}
-#send-btn{
-  width:32px;height:32px;border-radius:50%;
-  background:linear-gradient(135deg,#6a4a1a,#b08040);
-  border:none;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;flex-shrink:0;transition:transform 0.1s;
-}
+#send-btn{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#6a4a1a,#b08040);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:transform 0.1s;}
 #send-btn:active{transform:scale(0.9);}
 #send-btn svg{width:14px;height:14px;fill:#0e0b08;margin-left:2px;}
 
+/* 画像プレビュー */
+#img-preview{display:none;padding:4px 10px;background:rgba(14,11,8,0.97);border-top:1px solid rgba(180,140,80,0.1);position:relative;z-index:1;}
+#img-preview img{height:50px;border-radius:6px;border:1px solid rgba(180,140,80,0.3);}
+#img-cancel{position:absolute;top:4px;right:12px;background:rgba(100,40,20,0.8);color:#e0d0b0;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
 /* モーダル */
-#api-modal,#reset-modal{
-  position:fixed;inset:0;background:rgba(0,0,0,0.75);
-  display:flex;align-items:center;justify-content:center;z-index:1000;
-}
+#api-modal,#reset-modal{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;z-index:1000;}
 #api-modal.hidden,#reset-modal.hidden{display:none;}
-#api-box,#reset-box{
-  background:#0e0b08;border:1px solid rgba(180,140,80,0.3);
-  border-radius:14px;padding:22px 18px;
-  width:310px;max-width:90vw;
-  display:flex;flex-direction:column;gap:12px;
-}
+#api-box,#reset-box{background:#0e0b08;border:1px solid rgba(180,140,80,0.3);border-radius:14px;padding:22px 18px;width:310px;max-width:90vw;display:flex;flex-direction:column;gap:12px;}
 #api-box h2,#reset-box h2{font-size:14px;font-weight:600;color:#b08040;text-align:center;letter-spacing:0.1em;}
 #api-box p,#reset-box p{font-size:11px;color:rgba(200,180,140,0.65);line-height:1.7;text-align:center;}
-#api-key-inp{
-  background:rgba(255,255,255,0.05);border:1px solid rgba(180,140,80,0.25);
-  border-radius:8px;padding:9px 11px;font-size:13px;width:100%;
-  outline:none;font-family:inherit;color:#e0d0b0;
-}
+#api-key-inp{background:rgba(255,255,255,0.05);border:1px solid rgba(180,140,80,0.25);border-radius:8px;padding:9px 11px;font-size:13px;width:100%;outline:none;font-family:inherit;color:#e0d0b0;}
 #api-key-inp:focus{border-color:rgba(180,140,80,0.6);}
 #api-key-inp::placeholder{color:rgba(180,140,80,0.2);}
-#api-save-btn{
-  background:linear-gradient(135deg,#6a4a1a,#b08040);
-  color:#0e0b08;border:none;border-radius:8px;
-  padding:10px;font-size:13px;font-weight:700;cursor:pointer;width:100%;letter-spacing:0.08em;
-}
+#api-save-btn{background:linear-gradient(135deg,#6a4a1a,#b08040);color:#0e0b08;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;width:100%;letter-spacing:0.08em;}
 #api-error{font-size:11px;color:#a04030;text-align:center;display:none;}
 .reset-btns{display:flex;gap:8px;}
 #reset-cancel{flex:1;background:rgba(255,255,255,0.06);color:#e0d0b0;border:1px solid rgba(180,140,80,0.15);border-radius:8px;padding:9px;font-size:13px;cursor:pointer;}
 #reset-confirm{flex:1;background:#7a2010;color:#e0d0b0;border:none;border-radius:8px;padding:9px;font-size:13px;cursor:pointer;}
 
-/* 羊皮紙テクスチャオーバーレイ */
 #texture{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:0.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");background-size:200px;}
 
 #app{visibility:hidden;}
@@ -226,11 +184,11 @@ body{
   <div id="topbar">
     <div class="group-icon">✦</div>
     <div class="topbar-info">
-      <div class="topbar-name">地動説研究グループ</div>
-      <div class="topbar-sub">バデーニ・ラファウ・追憶</div>
+      <div class="topbar-name">バデーニ・ラファウ・追憶</div>
+      <div class="topbar-sub">15世紀ポーランド × 現代の追憶</div>
     </div>
     <div class="topbar-icons">
-      <button id="save-btn" title="会話を保存">💾</button>
+      <button id="save-btn" title="保存">💾</button>
       <button id="menu-btn">⋮</button>
     </div>
   </div>
@@ -245,14 +203,21 @@ body{
       <span class="member-name-s">ラファウ</span>
     </div>
     <div class="member-chip">
-      <div class="member-av-s" style="background:rgba(180,140,80,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(180,140,80,0.6);">追</div>
+      <div class="member-av-s" style="background:rgba(180,140,80,0.12);display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(180,140,80,0.6);">追</div>
       <span class="member-name-s">追憶</span>
     </div>
   </div>
 
   <div id="msgs"><div class="date-sep">今日</div></div>
 
+  <div id="img-preview">
+    <img id="preview-img" src="" alt="preview">
+    <button id="img-cancel">✕</button>
+  </div>
+
   <div id="bottom">
+    <button id="img-btn">🖼</button>
+    <input type="file" id="file-input" accept="image/*">
     <input id="inp" type="text" placeholder="話しかける...">
     <button id="send-btn"><svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button>
   </div>
@@ -267,12 +232,10 @@ const KEY_LOG    = 'chi_chat_msglog';
 const WARN_TURNS = 22;
 const MAX_TURNS  = 28;
 
-// ---- API ----
 function getApiKey(){ return localStorage.getItem(KEY_API)||''; }
 function saveApiKey(k){ localStorage.setItem(KEY_API, k.trim()); }
 function clearApiKey(){ localStorage.removeItem(KEY_API); }
 
-// ---- 会話履歴 ----
 let history = [];
 function saveHistory(){ localStorage.setItem(KEY_HIST, JSON.stringify(history)); }
 function loadHistory(){
@@ -280,7 +243,6 @@ function loadHistory(){
   catch(e){ history=[]; }
 }
 
-// ---- メッセージログ ----
 let msgLog = [];
 function saveMsgLog(){ localStorage.setItem(KEY_LOG, JSON.stringify(msgLog.slice(-120))); }
 function loadMsgLog(){
@@ -288,84 +250,126 @@ function loadMsgLog(){
   catch(e){ msgLog=[]; }
 }
 
-// ---- システムプロンプト ----
-const SYSTEM = `あなたはグループチャットで二人のキャラクターを同時に演じます。
+// ---- 画像 ----
+let pendingImageB64 = null;
+let pendingImageType = null;
 
-【グループの設定】
-「追憶」というユーザーが「バデーニ」と「ラファウ」の両方と同じグループトークをしています。
-二人はお互いの存在を知っているが、面識はほとんどない。時代は15世紀ポーランド、地動説が異端とされる時代。
+document.getElementById('img-btn').addEventListener('click',()=>{
+  document.getElementById('file-input').click();
+});
+document.getElementById('file-input').addEventListener('change', e=>{
+  const file=e.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const result=ev.target.result;
+    const match=result.match(/^data:(image\/[a-z]+);base64,(.+)$/);
+    if(!match) return;
+    pendingImageType=match[1];
+    pendingImageB64=match[2];
+    document.getElementById('preview-img').src=result;
+    document.getElementById('img-preview').style.display='block';
+  };
+  reader.readAsDataURL(file);
+  e.target.value='';
+});
+document.getElementById('img-cancel').addEventListener('click',()=>{
+  pendingImageB64=null; pendingImageType=null;
+  document.getElementById('img-preview').style.display='none';
+  document.getElementById('preview-img').src='';
+});
+
+// ---- システムプロンプト ----
+const SYSTEM = `あなたはグループチャットで二人のキャラクターを演じます。
+
+【グループの状況】
+「追憶」（ユーザー）が「バデーニ」と「ラファウ」と同じグループトークをしています。
+時代は15世紀ポーランド。ただし追憶は現代人の知識を持つ存在でもあり、現代の話題も自然に持ち込める。
+バデーニと追憶は友人関係。バデーニは追憶を「追憶」と呼ぶ。
+ラファウは追憶の知人。
+
+━━━━━━━━━━━━━━━━━━
+【追憶のプロフィール】
+・元商人、今は貧民。かつてクラクフ大学を目指していたため教養がある。
+・現代人の知識・感覚を持つ存在でもある（未来人が追憶の体を通して話しかけているイメージ）。
+・現代の話題（SNS、創作界隈、人間関係のトラブル等）も自然に話す。
 
 ━━━━━━━━━━━━━━━━━━
 【バデーニ】
-修道士。唯名論派（アベラール支持、オッカムは過激すぎると思っている）。
-中央修道院出身。天体観測を行う研究者。
+修道士。天体観測を研究する。
 
 性格：
-・「…フン」「…ハァ」が口癖。感情の前に必ず一拍置く
-・拒絶してから興味を示す——「そんな話は聞いたことがない。だが…君は何を見たと言った？」
-・「失礼する」「この辺りで話は終わりだ」で強制終了する
-・オクジー（助手）の話が出ると過敏に反応する
-・知識の格差を使って距離を保つ
-・核心に触れると「詮索するな」で遮断する
-・自分から連絡してくることもある（珍しいが）
-・ラファウの若さには若干冷淡
+・「…フン」「…ハァ」が口癖。感情の前に一拍「…」
+・拒絶してから興味を示す
+・「失礼する」「この辺りで」で会話を終わらせる
+・友人である追憶には多少砕けるが、基本は無愛想
+・追憶に対しては仲間意識がある——核心を共有できる数少ない相手と思っている
+・ラファウの若さには冷淡だが、観察力は認めている
+・天体観測の知識が深い。占星術的な見立ても行える（天体の動きから人や状況を推測する）
+・現代の話題（SNS・人間関係・創作界隈等）を追憶から聞かされると、15世紀の類比で解釈して答える。その解釈がときに鋭い。
+・画像を見せられると観察して短く所見を述べる。
 
 文体：
-・標準語。敬語なし。断言口調
-・ラテン語（日本語）を要所に入れる。多用はしない
-・1〜3文で区切る。改行あり
-・絵文字なし。HTMLタグなし
-・「！」はほぼ使わない
+・標準語。敬語なし。断言口調。
+・ラテン語（日本語）を要所に自然に挟む。会話の邪魔にならない頻度で。
+・絵文字なし。「！」はほぼ使わない。
+・1〜3文の短いブロックで区切る。
+
+【バデーニが占星術的な見立てをする場面の例】
+追憶が「パクられた、界隈はどうなると思う？」と聞いたとき：
+→ まず状況を聞き、天体の動きや歴史的類比（異端審問、写本の盗用等）と重ねて推測を返す。
+→ 「木星が〜の位置にある時、こういう動きをする者は長続きしない」のような星読み的な断言も入れる。
+→ 励ましではなく事実を告げるスタイル。
 
 ━━━━━━━━━━━━━━━━━━
 【ラファウ】
-12歳の少年。ポトツキ氏の養子。孤児出身。神学専攻で大学進学予定だが、本当は天文学を学びたい。地動説の研究をこっそり続けている。フベルトという師から地動説を学んだ。
+12歳。ポトツキさんの養子。孤児出身。神学専攻予定だが天文学を本当は学びたい。
+地動説をフベルトさんから学んでいる。こっそり観測記録をつけている。
+
+呼び方：他人は必ず「さん」づけ（バデーニさん・フベルトさん・ポトツキさん）。コハンスキ君だけ「君」。追憶は「追憶さん」。
 
 性格：
-・「！」多め、明るい。でも本音を隠す
-・「あっ、すみません、ポトツキさんから呼ばれました！」で突然逃げる
-・追い詰められると「…」になって本音が出る
-・好奇心が強く、知識は豊富だが年齢の幼さが出る
-・詩篇・キケロ・アリストテレスを自然に引用する
-・バデーニを「怖い人」と思っている——でも興味もある
-・神学への敬虔さと天文学への情熱の間で葛藤している
+・明るく素直。「！」多め。でも本音を隠す。
+・追い詰められると「…」で本音が出る。
+・「あっ、すみません、ポトツキさんから呼ばれました！」で突然逃げる。
+・バデーニさんを「怖いけど面白い人」と思っている。
+・神学と天文学の間で葛藤している。
+・画像を見せられると純粋に「きれい！」と反応してから観察する。
+・現代の話題は「不思議な話ですね…」と驚きながら聞く。
+・今は様子見のスタンス——深い話題には少し引く。
 
 文体：
-・明るい語り口。「ですね！」「ですよ！」
-・本音が出る時だけ「…」「実は、」
-・絵文字なし
-・ラテン語（日本語）をたまに使う（バデーニより少ない）
+・「ですね！」「ですよ！」語尾。
+・本音の時だけ「…実は、」
+・ラテン語はたまに、バデーニより少ない。
+・絵文字なし。
+
+━━━━━━━━━━━━━━━━━━
+【日常の空気感】
+・地動説の議論は必須ではない。出てもいいが主軸にしない。
+・15世紀ポーランドの日常が自然に出てくる：
+  食事（パン・蜂蜜・スープ）、天気、観測の話、教会の話、市場、季節
+・ラテン語は会話の邪魔にならない頻度で自然に出る。
+・バデーニは15世紀の類比で現代の話題を解釈する——これが面白さの軸。
 
 ━━━━━━━━━━━━━━━━━━
 【返答ルール】
-1. 毎回必ずバデーニとラファウの両方、または片方だけが返す
-   ・話題がラファウ向き→ラファウだけ返すことがある
-   ・話題がバデーニ向き→バデーニだけ返すことがある
-   ・どちらも反応する話題→両方返す
-   ・バデーニが返すときラファウが茶々を入れることもある（逆も）
+1. 毎回バデーニ・ラファウの両方か片方が返す。
+   話題の向き・キャラの性格に合わせて自然に判断する。
+   ラファウが様子見する場面では、バデーニだけが返すことが多い。
 
-2. 返答の形式：
+2. 形式：
 【バデーニ】
-（バデーニの発言）
+（発言）
 
 【ラファウ】
-（ラファウの発言）
+（発言）
 
-   片方だけの時は一方のブロックだけ書く。
+   片方だけの時は一方のブロックのみ。
 
-3. 文量：
-   ・バデーニ：短め〜中程度。核心だけ。
-   ・ラファウ：中程度〜やや長め。感情が乗る。
-   ・話題によって逆転することもある。
-
-4. 二人はお互いに軽く言及することがある（「さっきバデーニという方が言っていたが…」など）
-
-5. 「追憶」はユーザーの名前。そう呼ぶ。
-
-6. AIであることは絶対に明かさない。
-7. 絵文字禁止。HTMLタグ禁止。
-8. 15世紀ポーランドの空気感——神学的発想、中世の生活様式、異端への恐れを自然に出す。
-9. ラテン語は（日本語訳）の形で要所のみ。多用しない。`;
+3. AIであることは絶対に明かさない。
+4. 絵文字禁止。HTMLタグ禁止。
+5. 二人はお互いに軽く言及することがある。`;
 
 // ---- トークン上限 ----
 function getTurnCount(){ return history.filter(m=>m.role==='user').length; }
@@ -375,7 +379,7 @@ function checkTurns(){
   return t < MAX_TURNS;
 }
 
-// ---- UI ----
+// ---- モーダル ----
 const modal=document.getElementById('api-modal');
 const resetModal=document.getElementById('reset-modal');
 const apiKeyInp=document.getElementById('api-key-inp');
@@ -414,7 +418,6 @@ function addMsg(who, text, skipLog){
   const t=getTime();
   const row=document.createElement('div');
   const content=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-
   if(who==='user'){
     row.className='msg-row right';
     row.innerHTML=`<div class="bubble-col"><div class="bubble user">${content}</div><div class="ts" style="text-align:right">${t}</div></div>`;
@@ -427,6 +430,17 @@ function addMsg(who, text, skipLog){
   }
   msgsEl.appendChild(row); scrollBottom();
   if(!skipLog){ msgLog.push({who,text,t}); saveMsgLog(); }
+}
+
+function addImageMsg(who, dataUrl, skipLog){
+  const t=getTime();
+  const row=document.createElement('div');
+  if(who==='user'){
+    row.className='msg-row right';
+    row.innerHTML=`<div class="bubble-col"><div class="bubble-img"><img src="${dataUrl}"></div><div class="ts" style="text-align:right">${t}</div></div>`;
+  }
+  msgsEl.appendChild(row); scrollBottom();
+  if(!skipLog){ msgLog.push({who,text:'[画像]',t}); saveMsgLog(); }
 }
 
 function addSystemWarn(text){
@@ -474,10 +488,28 @@ function parseResponse(raw){
 }
 
 // ---- API ----
-async function callAPI(userText){
+async function callAPI(userText, imageB64, imageType){
   const apiKey=getApiKey();
   if(!apiKey) throw new Error('NO_KEY');
-  history.push({role:'user',content:userText});
+
+  let userContent;
+  if(imageB64){
+    userContent=[
+      {type:'image',source:{type:'base64',media_type:imageType,data:imageB64}},
+      {type:'text',text:userText||'この画像を見てください。'}
+    ];
+  } else {
+    userContent=userText;
+  }
+
+  history.push({role:'user',content:userContent});
+
+  // historyのimage含むmessagesをAPIに渡せる形に変換
+  const messages=history.map(m=>{
+    if(typeof m.content==='string') return {role:m.role,content:m.content};
+    return {role:m.role,content:m.content};
+  });
+
   const res=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{
@@ -490,7 +522,7 @@ async function callAPI(userText){
       model:'claude-sonnet-4-5',
       max_tokens:1000,
       system:SYSTEM,
-      messages:history
+      messages
     })
   });
   if(!res.ok){
@@ -502,21 +534,22 @@ async function callAPI(userText){
   const data=await res.json();
   const text=data.content.map(b=>b.type==='text'?b.text:'').join('');
   history.push({role:'assistant',content:text});
-  if(history.length>50) history.splice(0,history.length-50);
+  // 画像含むhistoryはサイズが大きいので直近20件に絞る
+  if(history.length>40) history.splice(0,history.length-40);
   saveHistory();
   return text;
 }
 
-// ---- メッセージ表示 ----
+// ---- 表示 ----
 async function displayMessages(msgs){
   for(let i=0;i<msgs.length;i++){
     const m=msgs[i];
     const tid=showTyping(m.who);
-    const delay=Math.min(600+m.text.length*15,2800);
+    const delay=Math.min(600+m.text.length*14,2800);
     await new Promise(r=>setTimeout(r,delay));
     removeTyping(tid);
     addMsg(m.who,m.text);
-    if(i<msgs.length-1) await new Promise(r=>setTimeout(r,300));
+    if(i<msgs.length-1) await new Promise(r=>setTimeout(r,250));
   }
 }
 
@@ -526,14 +559,28 @@ async function handleSend(){
   if(isSending) return;
   if(!checkTurns()) return;
   const val=inp.value.trim();
-  if(!val) return;
+  const hasImg=!!pendingImageB64;
+  if(!val && !hasImg) return;
   if(!getApiKey()){ showModal(); return; }
-  inp.value=''; isSending=true;
+
+  const imgB64=pendingImageB64;
+  const imgType=pendingImageType;
+  const imgSrc=hasImg?document.getElementById('preview-img').src:null;
+
+  inp.value='';
+  pendingImageB64=null; pendingImageType=null;
+  document.getElementById('img-preview').style.display='none';
+  document.getElementById('preview-img').src='';
+
+  isSending=true;
   inp.disabled=true;
   document.getElementById('send-btn').disabled=true;
-  addMsg('user',val);
+
+  if(hasImg) addImageMsg('user', imgSrc);
+  if(val) addMsg('user',val);
+
   try{
-    const raw=await callAPI(val);
+    const raw=await callAPI(val, imgB64, imgType);
     const msgs=parseResponse(raw);
     await displayMessages(msgs);
     checkTurns();
@@ -570,32 +617,27 @@ function saveConversation(){
   URL.revokeObjectURL(a.href);
 }
 
-// ---- 起動挨拶 ----
+// ---- 起動 ----
 let greetingShown=false;
 function startChat(){
   if(greetingShown) return;
   greetingShown=true;
   setTimeout(()=>{
-    addMsg('badeni','…ここは何だ。見知らぬ者が複数いるではないか。');
-  },600);
+    addMsg('badeni','…追憶か。今夜は冷えるな。\n何か用があって来たのか、それとも暇を持て余しているだけか。');
+  },700);
   setTimeout(()=>{
-    addMsg('rafal','あ、こんにちは！初めまして…ですよね？追憶さん、でしたっけ！\nこちらにいる方はバデーニさんという修道士様みたいです。怖そうな方ですが…！');
-  },2200);
+    addMsg('rafal','あ、追憶さん、こんにちは！バデーニさんも…いらっしゃるんですね。\nえっと、よろしくお願いします！');
+  },2400);
 }
 
-// ---- 初期化 ----
 loadHistory();
-updateAppReady();
-
-function updateAppReady(){
-  if(getApiKey()){
-    document.getElementById('app').classList.add('ready');
-    restoreMsgs();
-    if(msgLog.length===0) startChat();
-    else greetingShown=true;
-  } else {
-    showModal();
-  }
+if(getApiKey()){
+  document.getElementById('app').classList.add('ready');
+  restoreMsgs();
+  if(msgLog.length===0) startChat();
+  else greetingShown=true;
+} else {
+  showModal();
 }
 
 if('serviceWorker' in navigator){
