@@ -1,0 +1,22 @@
+{
+  "name": "チ。グループ",
+  "short_name": "チ。チャット",
+  "description": "バデーニとラファウとグループトークができる。",
+  "start_url": "/chi_chat/",
+  "display": "standalone",
+  "background_color": "#0e0b08",
+  "theme_color": "#0e0b08",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "badeni_icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "badeni_icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

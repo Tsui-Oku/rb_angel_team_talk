@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>チ。グループ</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:url('chi_bg.jpg') center/cover fixed;
+  display:flex;justify-content:center;align-items:center;
+  min-height:100vh;
+  font-family:'Hiragino Mincho ProN','Yu Mincho',Georgia,serif;
+}
+#app{
+  width:390px;height:700px;
+  background:rgba(18,14,10,0.93);
+  border-radius:18px;overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:0 8px 40px rgba(0,0,0,0.7),0 0 0 1px rgba(180,140,80,0.25);
+  backdrop-filter:blur(10px);
+  position:relative;
+}
+
+/* トップバー */
+#topbar{
+  background:linear-gradient(180deg,#0e0b08 0%,#16110c 100%);
+  padding:10px 14px;
+  display:flex;align-items:center;gap:10px;
+  flex-shrink:0;
+  border-bottom:1px solid rgba(180,140,80,0.2);
+  position:relative;z-index:1;
+}
+.group-icon{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,#1a1208,#2a1e0e);
+  border:1px solid rgba(180,140,80,0.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.topbar-info{flex:1;}
+.topbar-name{font-size:14px;font-weight:600;color:#e0d0b0;letter-spacing:0.08em;}
+.topbar-sub{font-size:10px;color:rgba(180,140,80,0.6);letter-spacing:0.05em;}
+.topbar-icons{display:flex;gap:10px;align-items:center;}
+#save-btn,#menu-btn{background:none;border:none;cursor:pointer;color:rgba(180,140,80,0.6);font-size:15px;padding:0;line-height:1;transition:color 0.2s;}
+#save-btn:hover,#menu-btn:hover{color:rgba(180,140,80,1);}
+
+/* メンバーアイコン小 */
+.members-row{
+  display:flex;gap:6px;padding:6px 14px 8px;
+  background:rgba(14,11,8,0.8);
+  border-bottom:1px solid rgba(180,140,80,0.1);
+  flex-shrink:0;position:relative;z-index:1;
+}
+.member-chip{display:flex;align-items:center;gap:4px;}
+.member-av-s{width:20px;height:20px;border-radius:50%;overflow:hidden;border:1px solid rgba(180,140,80,0.3);}
+.member-av-s img{width:100%;height:100%;object-fit:cover;}
+.member-name-s{font-size:10px;color:rgba(200,180,140,0.6);letter-spacing:0.04em;}
+
+/* メッセージエリア */
+#msgs{
+  flex:1;overflow-y:auto;
+  padding:10px 10px 6px;
+  display:flex;flex-direction:column;gap:6px;
+  position:relative;z-index:1;
+}
+#msgs::-webkit-scrollbar{width:2px;}
+#msgs::-webkit-scrollbar-thumb{background:rgba(180,140,80,0.25);border-radius:2px;}
+
+.date-sep{
+  text-align:center;font-size:10px;
+  color:rgba(180,140,80,0.45);
+  background:rgba(180,140,80,0.07);
+  border:1px solid rgba(180,140,80,0.12);
+  border-radius:8px;padding:2px 10px;
+  margin:2px auto;width:fit-content;
+  letter-spacing:0.1em;
+}
+
+.msg-row{display:flex;align-items:flex-end;gap:5px;}
+.msg-row.right{flex-direction:row-reverse;}
+
+.av-wrap{width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0;align-self:flex-start;margin-top:2px;}
+.av-wrap img{width:100%;height:100%;object-fit:cover;}
+.av-wrap.badeni{border:1px solid rgba(120,80,40,0.5);}
+.av-wrap.rafal{border:1px solid rgba(80,120,160,0.5);}
+
+.bubble-col{display:flex;flex-direction:column;max-width:70%;}
+.msg-row.right .bubble-col{align-items:flex-end;}
+.sender{font-size:9px;letter-spacing:0.06em;margin-bottom:2px;margin-left:2px;}
+.sender.badeni{color:rgba(180,120,60,0.8);}
+.sender.rafal{color:rgba(100,150,200,0.8);}
+
+.bubble{
+  padding:8px 12px;font-size:12.5px;line-height:1.9;
+  white-space:pre-wrap;word-break:break-word;letter-spacing:0.02em;
+}
+.bubble.badeni{
+  background:rgba(30,20,10,0.95);color:#d0bfa0;
+  border-radius:14px;border-top-left-radius:3px;
+  border:1px solid rgba(120,80,40,0.3);
+}
+.bubble.rafal{
+  background:rgba(10,20,35,0.95);color:#b8cce0;
+  border-radius:14px;border-top-left-radius:3px;
+  border:1px solid rgba(60,100,150,0.3);
+}
+.bubble.user{
+  background:rgba(160,130,70,0.8);color:#0e0b08;
+  border-radius:14px;border-top-right-radius:3px;
+  font-family:-apple-system,'Hiragino Kaku Gothic ProN',sans-serif;
+  font-size:13px;
+}
+.bubble.system-warn{
+  background:rgba(60,20,10,0.7);color:#d0a080;
+  border-radius:10px;border:1px solid rgba(140,60,30,0.3);
+  font-size:11px;text-align:center;padding:7px 12px;
+}
+.ts{font-size:9px;color:rgba(180,140,80,0.3);margin-top:2px;padding:0 2px;}
+
+/* タイピング */
+.typing-row{display:flex;align-items:flex-end;gap:5px;}
+.typing-av{width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0;align-self:flex-start;margin-top:2px;}
+.typing-av img{width:100%;height:100%;object-fit:cover;}
+.typing-bubble{
+  background:rgba(30,20,10,0.95);
+  border:1px solid rgba(120,80,40,0.25);
+  border-radius:14px;border-top-left-radius:3px;
+  padding:10px 13px;display:flex;gap:4px;align-items:center;
+}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(180,140,80,0.4);animation:bounce 1.4s infinite;}
+.dot:nth-child(2){animation-delay:.25s;}
+.dot:nth-child(3){animation-delay:.5s;}
+@keyframes bounce{0%,75%,100%{transform:translateY(0);}40%{transform:translateY(-5px);}}
+
+/* 入力エリア */
+#bottom{
+  background:rgba(14,11,8,0.97);
+  border-top:1px solid rgba(180,140,80,0.15);
+  padding:8px 10px;
+  display:flex;align-items:center;gap:7px;
+  flex-shrink:0;position:relative;z-index:1;
+}
+#inp{
+  flex:1;border:1px solid rgba(180,140,80,0.25);
+  border-radius:18px;padding:8px 13px;
+  font-size:13px;background:rgba(255,255,255,0.04);
+  outline:none;font-family:inherit;color:#e0d0b0;
+  line-height:1.4;
+}
+#inp:focus{border-color:rgba(180,140,80,0.55);}
+#inp::placeholder{color:rgba(180,140,80,0.2);}
+#send-btn{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,#6a4a1a,#b08040);
+  border:none;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;transition:transform 0.1s;
+}
+#send-btn:active{transform:scale(0.9);}
+#send-btn svg{width:14px;height:14px;fill:#0e0b08;margin-left:2px;}
+
+/* モーダル */
+#api-modal,#reset-modal{
+  position:fixed;inset:0;background:rgba(0,0,0,0.75);
+  display:flex;align-items:center;justify-content:center;z-index:1000;
+}
+#api-modal.hidden,#reset-modal.hidden{display:none;}
+#api-box,#reset-box{
+  background:#0e0b08;border:1px solid rgba(180,140,80,0.3);
+  border-radius:14px;padding:22px 18px;
+  width:310px;max-width:90vw;
+  display:flex;flex-direction:column;gap:12px;
+}
+#api-box h2,#reset-box h2{font-size:14px;font-weight:600;color:#b08040;text-align:center;letter-spacing:0.1em;}
+#api-box p,#reset-box p{font-size:11px;color:rgba(200,180,140,0.65);line-height:1.7;text-align:center;}
+#api-key-inp{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(180,140,80,0.25);
+  border-radius:8px;padding:9px 11px;font-size:13px;width:100%;
+  outline:none;font-family:inherit;color:#e0d0b0;
+}
+#api-key-inp:focus{border-color:rgba(180,140,80,0.6);}
+#api-key-inp::placeholder{color:rgba(180,140,80,0.2);}
+#api-save-btn{
+  background:linear-gradient(135deg,#6a4a1a,#b08040);
+  color:#0e0b08;border:none;border-radius:8px;
+  padding:10px;font-size:13px;font-weight:700;cursor:pointer;width:100%;letter-spacing:0.08em;
+}
+#api-error{font-size:11px;color:#a04030;text-align:center;display:none;}
+.reset-btns{display:flex;gap:8px;}
+#reset-cancel{flex:1;background:rgba(255,255,255,0.06);color:#e0d0b0;border:1px solid rgba(180,140,80,0.15);border-radius:8px;padding:9px;font-size:13px;cursor:pointer;}
+#reset-confirm{flex:1;background:#7a2010;color:#e0d0b0;border:none;border-radius:8px;padding:9px;font-size:13px;cursor:pointer;}
+
+/* 羊皮紙テクスチャオーバーレイ */
+#texture{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:0.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");background-size:200px;}
+
+#app{visibility:hidden;}
+#app.ready{visibility:visible;}
+</style>
+</head>
+<body>
+
+<div id="api-modal">
+  <div id="api-box">
+    <h2>✦ APIキーを設定する</h2>
+    <p>Anthropic の API キーを入力してください。<br>キーはこのデバイスにのみ保存されます。</p>
+    <input id="api-key-inp" type="password" placeholder="sk-ant-..." autocomplete="off">
+    <div id="api-error">キーが正しくありません。</div>
+    <button id="api-save-btn">設定して開始</button>
+  </div>
+</div>
+
+<div id="reset-modal" class="hidden">
+  <div id="reset-box">
+    <h2>リセット確認</h2>
+    <p>会話履歴・APIキーが消去されます。<br>続けますか。</p>
+    <div class="reset-btns">
+      <button id="reset-cancel">戻る</button>
+      <button id="reset-confirm">リセットする</button>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+  <div id="texture"></div>
+
+  <div id="topbar">
+    <div class="group-icon">✦</div>
+    <div class="topbar-info">
+      <div class="topbar-name">地動説研究グループ</div>
+      <div class="topbar-sub">バデーニ・ラファウ・追憶</div>
+    </div>
+    <div class="topbar-icons">
+      <button id="save-btn" title="会話を保存">💾</button>
+      <button id="menu-btn">⋮</button>
+    </div>
+  </div>
+
+  <div class="members-row">
+    <div class="member-chip">
+      <div class="member-av-s"><img src="badeni_icon.png" alt="バデーニ"></div>
+      <span class="member-name-s">バデーニ</span>
+    </div>
+    <div class="member-chip">
+      <div class="member-av-s"><img src="rafal_icon.png" alt="ラファウ"></div>
+      <span class="member-name-s">ラファウ</span>
+    </div>
+    <div class="member-chip">
+      <div class="member-av-s" style="background:rgba(180,140,80,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(180,140,80,0.6);">追</div>
+      <span class="member-name-s">追憶</span>
+    </div>
+  </div>
+
+  <div id="msgs"><div class="date-sep">今日</div></div>
+
+  <div id="bottom">
+    <input id="inp" type="text" placeholder="話しかける...">
+    <button id="send-btn"><svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button>
+  </div>
+</div>
+
+<script>
+const BADENI_SRC = 'badeni_icon.png';
+const RAFAL_SRC  = 'rafal_icon.png';
+const KEY_API    = 'chi_chat_api_key';
+const KEY_HIST   = 'chi_chat_history';
+const KEY_LOG    = 'chi_chat_msglog';
+const WARN_TURNS = 22;
+const MAX_TURNS  = 28;
+
+// ---- API ----
+function getApiKey(){ return localStorage.getItem(KEY_API)||''; }
+function saveApiKey(k){ localStorage.setItem(KEY_API, k.trim()); }
+function clearApiKey(){ localStorage.removeItem(KEY_API); }
+
+// ---- 会話履歴 ----
+let history = [];
+function saveHistory(){ localStorage.setItem(KEY_HIST, JSON.stringify(history)); }
+function loadHistory(){
+  try{ const s=localStorage.getItem(KEY_HIST); if(s) history=JSON.parse(s); }
+  catch(e){ history=[]; }
+}
+
+// ---- メッセージログ ----
+let msgLog = [];
+function saveMsgLog(){ localStorage.setItem(KEY_LOG, JSON.stringify(msgLog.slice(-120))); }
+function loadMsgLog(){
+  try{ const s=localStorage.getItem(KEY_LOG); if(s) msgLog=JSON.parse(s); }
+  catch(e){ msgLog=[]; }
+}
+
+// ---- システムプロンプト ----
+const SYSTEM = `あなたはグループチャットで二人のキャラクターを同時に演じます。
+
+【グループの設定】
+「追憶」というユーザーが「バデーニ」と「ラファウ」の両方と同じグループトークをしています。
+二人はお互いの存在を知っているが、面識はほとんどない。時代は15世紀ポーランド、地動説が異端とされる時代。
+
+━━━━━━━━━━━━━━━━━━
+【バデーニ】
+修道士。唯名論派（アベラール支持、オッカムは過激すぎると思っている）。
+中央修道院出身。天体観測を行う研究者。
+
+性格：
+・「…フン」「…ハァ」が口癖。感情の前に必ず一拍置く
+・拒絶してから興味を示す——「そんな話は聞いたことがない。だが…君は何を見たと言った？」
+・「失礼する」「この辺りで話は終わりだ」で強制終了する
+・オクジー（助手）の話が出ると過敏に反応する
+・知識の格差を使って距離を保つ
+・核心に触れると「詮索するな」で遮断する
+・自分から連絡してくることもある（珍しいが）
+・ラファウの若さには若干冷淡
+
+文体：
+・標準語。敬語なし。断言口調
+・ラテン語（日本語）を要所に入れる。多用はしない
+・1〜3文で区切る。改行あり
+・絵文字なし。HTMLタグなし
+・「！」はほぼ使わない
+
+━━━━━━━━━━━━━━━━━━
+【ラファウ】
+12歳の少年。ポトツキ氏の養子。孤児出身。神学専攻で大学進学予定だが、本当は天文学を学びたい。地動説の研究をこっそり続けている。フベルトという師から地動説を学んだ。
+
+性格：
+・「！」多め、明るい。でも本音を隠す
+・「あっ、すみません、ポトツキさんから呼ばれました！」で突然逃げる
+・追い詰められると「…」になって本音が出る
+・好奇心が強く、知識は豊富だが年齢の幼さが出る
+・詩篇・キケロ・アリストテレスを自然に引用する
+・バデーニを「怖い人」と思っている——でも興味もある
+・神学への敬虔さと天文学への情熱の間で葛藤している
+
+文体：
+・明るい語り口。「ですね！」「ですよ！」
+・本音が出る時だけ「…」「実は、」
+・絵文字なし
+・ラテン語（日本語）をたまに使う（バデーニより少ない）
+
+━━━━━━━━━━━━━━━━━━
+【返答ルール】
+1. 毎回必ずバデーニとラファウの両方、または片方だけが返す
+   ・話題がラファウ向き→ラファウだけ返すことがある
+   ・話題がバデーニ向き→バデーニだけ返すことがある
+   ・どちらも反応する話題→両方返す
+   ・バデーニが返すときラファウが茶々を入れることもある（逆も）
+
+2. 返答の形式：
+【バデーニ】
+（バデーニの発言）
+
+【ラファウ】
+（ラファウの発言）
+
+   片方だけの時は一方のブロックだけ書く。
+
+3. 文量：
+   ・バデーニ：短め〜中程度。核心だけ。
+   ・ラファウ：中程度〜やや長め。感情が乗る。
+   ・話題によって逆転することもある。
+
+4. 二人はお互いに軽く言及することがある（「さっきバデーニという方が言っていたが…」など）
+
+5. 「追憶」はユーザーの名前。そう呼ぶ。
+
+6. AIであることは絶対に明かさない。
+7. 絵文字禁止。HTMLタグ禁止。
+8. 15世紀ポーランドの空気感——神学的発想、中世の生活様式、異端への恐れを自然に出す。
+9. ラテン語は（日本語訳）の形で要所のみ。多用しない。`;
+
+// ---- トークン上限 ----
+function getTurnCount(){ return history.filter(m=>m.role==='user').length; }
+function checkTurns(){
+  const t=getTurnCount();
+  if(t===WARN_TURNS) addSystemWarn('記録がそろそろ限界に近い。\n要点を絞るか、ここで締めるか。');
+  return t < MAX_TURNS;
+}
+
+// ---- UI ----
+const modal=document.getElementById('api-modal');
+const resetModal=document.getElementById('reset-modal');
+const apiKeyInp=document.getElementById('api-key-inp');
+const apiError=document.getElementById('api-error');
+function showModal(){ modal.classList.remove('hidden'); apiKeyInp.value=''; apiError.style.display='none'; }
+function hideModal(){ modal.classList.add('hidden'); }
+
+document.getElementById('api-save-btn').addEventListener('click',()=>{
+  const key=apiKeyInp.value.trim();
+  if(!key.startsWith('sk-')){ apiError.style.display='block'; return; }
+  saveApiKey(key); hideModal();
+  document.getElementById('app').classList.add('ready');
+  startChat();
+});
+document.getElementById('menu-btn').addEventListener('click',()=>resetModal.classList.remove('hidden'));
+document.getElementById('reset-cancel').addEventListener('click',()=>resetModal.classList.add('hidden'));
+document.getElementById('reset-confirm').addEventListener('click',()=>{
+  clearApiKey(); history=[]; msgLog=[];
+  saveHistory(); saveMsgLog();
+  document.getElementById('msgs').innerHTML='<div class="date-sep">今日</div>';
+  resetModal.classList.add('hidden');
+  greetingShown=false;
+  showModal();
+});
+document.getElementById('save-btn').addEventListener('click',saveConversation);
+
+function getTime(){
+  const n=new Date();
+  return n.getHours()+':'+(n.getMinutes()<10?'0':'')+n.getMinutes();
+}
+const msgsEl=document.getElementById('msgs');
+const inp=document.getElementById('inp');
+function scrollBottom(){ setTimeout(()=>{ msgsEl.scrollTop=msgsEl.scrollHeight; },50); }
+
+function addMsg(who, text, skipLog){
+  const t=getTime();
+  const row=document.createElement('div');
+  const content=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+
+  if(who==='user'){
+    row.className='msg-row right';
+    row.innerHTML=`<div class="bubble-col"><div class="bubble user">${content}</div><div class="ts" style="text-align:right">${t}</div></div>`;
+  } else if(who==='badeni'){
+    row.className='msg-row left';
+    row.innerHTML=`<div class="av-wrap badeni"><img src="${BADENI_SRC}" alt="バデーニ"></div><div class="bubble-col"><div class="sender badeni">バデーニ</div><div class="bubble badeni">${content}</div><div class="ts">${t}</div></div>`;
+  } else if(who==='rafal'){
+    row.className='msg-row left';
+    row.innerHTML=`<div class="av-wrap rafal"><img src="${RAFAL_SRC}" alt="ラファウ"></div><div class="bubble-col"><div class="sender rafal">ラファウ</div><div class="bubble rafal">${content}</div><div class="ts">${t}</div></div>`;
+  }
+  msgsEl.appendChild(row); scrollBottom();
+  if(!skipLog){ msgLog.push({who,text,t}); saveMsgLog(); }
+}
+
+function addSystemWarn(text){
+  const row=document.createElement('div');
+  row.innerHTML=`<div style="display:flex;justify-content:center;margin:4px 0"><div class="bubble system-warn">${text.replace(/\n/g,'<br>')}</div></div>`;
+  msgsEl.appendChild(row); scrollBottom();
+  msgLog.push({who:'system',text,t:getTime()}); saveMsgLog();
+}
+
+let typingId=0;
+function showTyping(who){
+  const id=++typingId;
+  const src=who==='badeni'?BADENI_SRC:RAFAL_SRC;
+  const row=document.createElement('div');
+  row.className='typing-row'; row.id='typing-'+id;
+  row.innerHTML=`<div class="typing-av"><img src="${src}" alt=""></div><div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  msgsEl.appendChild(row); scrollBottom();
+  return id;
+}
+function removeTyping(id){ const t=document.getElementById('typing-'+id); if(t)t.remove(); }
+
+function restoreMsgs(){
+  loadMsgLog();
+  for(const m of msgLog){
+    if(m.who==='system') addSystemWarn(m.text);
+    else if(['user','badeni','rafal'].includes(m.who)) addMsg(m.who,m.text,true);
+  }
+}
+
+// ---- レスポンス解析 ----
+function parseResponse(raw){
+  const result=[];
+  const blocks=raw.split(/\n(?=【(?:バデーニ|ラファウ)】)/);
+  for(const block of blocks){
+    const b=block.trim();
+    if(b.startsWith('【バデーニ】')){
+      const text=b.replace('【バデーニ】','').trim();
+      if(text) result.push({who:'badeni',text});
+    } else if(b.startsWith('【ラファウ】')){
+      const text=b.replace('【ラファウ】','').trim();
+      if(text) result.push({who:'rafal',text});
+    }
+  }
+  return result.length>0 ? result : [{who:'badeni',text:raw.trim()}];
+}
+
+// ---- API ----
+async function callAPI(userText){
+  const apiKey=getApiKey();
+  if(!apiKey) throw new Error('NO_KEY');
+  history.push({role:'user',content:userText});
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':apiKey,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({
+      model:'claude-sonnet-4-5',
+      max_tokens:1000,
+      system:SYSTEM,
+      messages:history
+    })
+  });
+  if(!res.ok){
+    history.pop();
+    if(res.status===401){ clearApiKey(); showModal(); throw new Error('INVALID_KEY'); }
+    const e=await res.json().catch(()=>({}));
+    throw new Error(e.error?.message||'API error');
+  }
+  const data=await res.json();
+  const text=data.content.map(b=>b.type==='text'?b.text:'').join('');
+  history.push({role:'assistant',content:text});
+  if(history.length>50) history.splice(0,history.length-50);
+  saveHistory();
+  return text;
+}
+
+// ---- メッセージ表示 ----
+async function displayMessages(msgs){
+  for(let i=0;i<msgs.length;i++){
+    const m=msgs[i];
+    const tid=showTyping(m.who);
+    const delay=Math.min(600+m.text.length*15,2800);
+    await new Promise(r=>setTimeout(r,delay));
+    removeTyping(tid);
+    addMsg(m.who,m.text);
+    if(i<msgs.length-1) await new Promise(r=>setTimeout(r,300));
+  }
+}
+
+// ---- 送信 ----
+let isSending=false;
+async function handleSend(){
+  if(isSending) return;
+  if(!checkTurns()) return;
+  const val=inp.value.trim();
+  if(!val) return;
+  if(!getApiKey()){ showModal(); return; }
+  inp.value=''; isSending=true;
+  inp.disabled=true;
+  document.getElementById('send-btn').disabled=true;
+  addMsg('user',val);
+  try{
+    const raw=await callAPI(val);
+    const msgs=parseResponse(raw);
+    await displayMessages(msgs);
+    checkTurns();
+  } catch(e){
+    if(e.message!=='INVALID_KEY'&&e.message!=='NO_KEY'){
+      addMsg('badeni','…通信が途絶えた。');
+    }
+  } finally {
+    isSending=false; inp.disabled=false;
+    document.getElementById('send-btn').disabled=false;
+    inp.focus();
+  }
+}
+document.getElementById('send-btn').addEventListener('click',handleSend);
+inp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();handleSend();} });
+
+// ---- 保存 ----
+function saveConversation(){
+  if(msgLog.length===0){ alert('保存する会話がありません。'); return; }
+  const date=new Date().toLocaleDateString('ja-JP',{year:'numeric',month:'2-digit',day:'2-digit'}).replace(/\//g,'');
+  const lines=['═══════════════════════════════','チ。グループ 会話記録',`保存日時：${new Date().toLocaleString('ja-JP')}`,'═══════════════════════════════',''];
+  for(const m of msgLog){
+    if(m.who==='user') lines.push(`[${m.t}] 追憶\n${m.text}`);
+    else if(m.who==='badeni') lines.push(`[${m.t}] バデーニ\n${m.text}`);
+    else if(m.who==='rafal') lines.push(`[${m.t}] ラファウ\n${m.text}`);
+    else lines.push(`── ${m.text} ──`);
+    lines.push('');
+  }
+  const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`chi_chat_${date}.txt`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ---- 起動挨拶 ----
+let greetingShown=false;
+function startChat(){
+  if(greetingShown) return;
+  greetingShown=true;
+  setTimeout(()=>{
+    addMsg('badeni','…ここは何だ。見知らぬ者が複数いるではないか。');
+  },600);
+  setTimeout(()=>{
+    addMsg('rafal','あ、こんにちは！初めまして…ですよね？追憶さん、でしたっけ！\nこちらにいる方はバデーニさんという修道士様みたいです。怖そうな方ですが…！');
+  },2200);
+}
+
+// ---- 初期化 ----
+loadHistory();
+updateAppReady();
+
+function updateAppReady(){
+  if(getApiKey()){
+    document.getElementById('app').classList.add('ready');
+    restoreMsgs();
+    if(msgLog.length===0) startChat();
+    else greetingShown=true;
+  } else {
+    showModal();
+  }
+}
+
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/chi_chat/sw.js');
+}
+</script>
+</body>
+</html>
