@@ -7,10 +7,14 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{
-  background:url('chi_bg.jpg') center/cover fixed;
+  background:#000;
+  transition:background 0.8s ease;
   display:flex;justify-content:center;align-items:center;
   min-height:100vh;
   font-family:'Hiragino Mincho ProN','Yu Mincho',Georgia,serif;
+}
+body.unlocked{
+  background:url('chi_bg.jpg') center/cover fixed;
 }
 #app{
   width:390px;height:700px;
@@ -465,6 +469,7 @@ document.getElementById('api-save-btn').addEventListener('click',()=>{
   const key=apiKeyInp.value.trim();
   if(!key.startsWith('sk-')){ apiError.style.display='block'; return; }
   saveApiKey(key); hideModal();
+  document.body.classList.add('unlocked');
   document.getElementById('app').classList.add('ready');
   startChat();
 });
@@ -472,6 +477,7 @@ document.getElementById('menu-btn').addEventListener('click',()=>resetModal.clas
 document.getElementById('reset-cancel').addEventListener('click',()=>resetModal.classList.add('hidden'));
 document.getElementById('reset-confirm').addEventListener('click',()=>{
   clearApiKey(); history=[]; msgLog=[];
+  document.body.classList.remove('unlocked');
   saveHistory(); saveMsgLog();
   document.getElementById('msgs').innerHTML='<div class="date-sep">今日</div>';
   resetModal.classList.add('hidden');
@@ -706,6 +712,7 @@ function startChat(){
 
 loadHistory();
 if(getApiKey()){
+  document.body.classList.add('unlocked');
   document.getElementById('app').classList.add('ready');
   restoreMsgs();
   if(msgLog.length===0) startChat();
